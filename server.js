@@ -30,21 +30,21 @@ io.on('connection', (socket) => {
     socket.data.roomCode = code;
     socket.data.name = hostName;
     socket.emit('room_created', { code });
-    io.to(code).emit('room_update', rooms[code]);
+    io.to(code).emit('lobby_update', rooms[code]);
   });
 
   socket.on('join_room', ({ name, code }) => {
     const room = rooms[code];
-    if (!room) return socket.emit('error', 'Sala no encontrada');
-    if (room.phase !== 'lobby') return socket.emit('error', 'La partida ya comenzó');
-    if (room.players.some(p => p.name === name)) return socket.emit('error', 'Nombre ya en uso');
+    if (!room) return socket.emit('join_error', 'Sala no encontrada');
+    if (room.phase !== 'lobby') return socket.emit('join_error', 'La partida ya comenzó');
+    if (room.players.some(p => p.name === name)) return socket.emit('join_error', 'Nombre ya en uso');
     room.players.push({ name, isHost: false });
     room.scores[name] = 0;
     socket.join(code);
     socket.data.roomCode = code;
     socket.data.name = name;
     socket.emit('joined', { code });
-    io.to(code).emit('room_update', room);
+    io.to(code).emit('lobby_update', room);
   });
 
   socket.on('start_game', ({ code, roundsConfig }) => {
@@ -67,8 +67,7 @@ io.on('connection', (socket) => {
     room.currentRound = 0;
     room.stopVotes = [];
     room.votes = {};
-    io.to(code).emit('room_update', room);
-    io.to(code).emit('game_started');
+    io.to(code).emit('game_started', room);
   });
 
   socket.on('vote_stop', ({ code, name }) => {
@@ -108,8 +107,7 @@ io.on('connection', (socket) => {
     room.votes = {};
     room.roundScores = {};
     room.phase = 'playing';
-    io.to(code).emit('room_update', room);
-    io.to(code).emit('game_started');
+    io.to(code).emit('game_started', room);
   });
 
   socket.on('end_game', ({ code }) => {
@@ -124,7 +122,7 @@ io.on('connection', (socket) => {
     const name = socket.data.name;
     if (code && rooms[code]) {
       rooms[code].players = rooms[code].players.filter(p => p.name !== name);
-      io.to(code).emit('room_update', rooms[code]);
+      io.to(code).emit('lobby_update', rooms[code]);
     }
   });
 });
