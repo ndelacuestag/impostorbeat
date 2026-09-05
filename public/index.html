@@ -33,7 +33,6 @@
   .btn:active { transform: scale(0.98); }
   .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
   .btn-primary { background: var(--accent); color: #fff; }
-  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border-strong); }
   .btn-danger { background: var(--danger); color: #fff; }
   .btn-success { background: var(--success); color: #000; }
   .btn-back { width:auto; padding:6px 12px; font-size:13px; background:var(--surface2); border:1px solid var(--border-strong); border-radius:8px; color:var(--text-muted); margin:0; }
@@ -50,7 +49,8 @@
   .music-display { text-align: center; padding: 2rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; margin-bottom: 1.25rem; }
   .music-emoji { font-size: 56px; display: block; margin-bottom: 0.75rem; }
   .music-genre-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .music-hint { font-size: 13px; color: var(--text-muted); }
+  .music-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 1rem; }
+  .btn-play { background: var(--accent); color: #fff; border: none; border-radius: var(--radius); padding: 12px 24px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; width: 100%; }
   .stop-bar-wrap { background: var(--surface2); border-radius: 4px; height: 6px; margin: 8px 0 4px; overflow: hidden; }
   .stop-bar-fill { height: 100%; background: var(--warning); border-radius: 4px; transition: width 0.3s; }
   .score-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 6px; }
@@ -108,12 +108,12 @@
   <div class="content" style="padding-top:1.5rem">
     <div class="section-title">Cómo se juega</div>
     <div class="how-step"><div class="step-num">1</div><div class="step-body"><div class="step-title">El host crea la sala</div><div class="step-desc">Elige "Crear sala", ingresa tu nombre y el número de jugadores (mínimo 3). Recibes un código de 6 letras.</div></div></div>
-    <div class="how-step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Los jugadores se unen</div><div class="step-desc">Cada jugador abre la app, elige "Unirse" e ingresa el código de sala y su nombre.</div></div></div>
-    <div class="how-step"><div class="step-num">3</div><div class="step-body"><div class="step-title">El host configura las rondas</div><div class="step-desc">Cuando todos estén conectados, el host define cuántas rondas, cuántos impostores y qué género escucha cada bando.</div></div></div>
-    <div class="how-step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Todos se ponen los audífonos</div><div class="step-desc">Al iniciar, cada celular reproduce automáticamente su música. Los titulares escuchan un género, el impostor otro.</div></div></div>
-    <div class="how-step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Conversación y sospecha</div><div class="step-desc">Con audífonos puestos, conversen entre todos. Sin revelar lo que escuchan, intenten descubrir quién suena diferente.</div></div></div>
-    <div class="how-step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Votar para parar</div><div class="step-desc">Cuando quieran terminar la ronda, voten "Detener". Con N−2 votos la música para y comienza la votación.</div></div></div>
-    <div class="how-step"><div class="step-num">7</div><div class="step-body"><div class="step-title">Puntaje</div><div class="step-desc">Titular que atrapa impostor: +2 pts. Impostor no descubierto: +1 pt por cada titular que no lo encontró. Impostor descubierto: −2 pts.</div></div></div>
+    <div class="how-step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Los jugadores se unen</div><div class="step-desc">Cada jugador abre la app, elige "Unirse" e ingresa el código y su nombre.</div></div></div>
+    <div class="how-step"><div class="step-num">3</div><div class="step-body"><div class="step-title">El host configura las rondas</div><div class="step-desc">Define cuántas rondas, cuántos impostores y qué género escucha cada bando.</div></div></div>
+    <div class="how-step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Todos se ponen los audífonos</div><div class="step-desc">Al iniciar, aparece tu género asignado. Toca "▶ Iniciar música" para que suene en tu celular.</div></div></div>
+    <div class="how-step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Conversación y sospecha</div><div class="step-desc">Con audífonos puestos, conversen. Sin revelar lo que escuchan, descubran quién suena diferente.</div></div></div>
+    <div class="how-step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Votar para parar</div><div class="step-desc">Con N−2 votos la música para y comienza la votación secreta.</div></div></div>
+    <div class="how-step"><div class="step-num">7</div><div class="step-body"><div class="step-title">Puntaje</div><div class="step-desc">Titular que atrapa impostor: +2 pts. Impostor no descubierto: +1 pt por titular que no lo encontró. Impostor descubierto: −2 pts.</div></div></div>
     <button class="btn btn-primary" style="margin-top:0.5rem" onclick="showScreen('home')">¡A jugar!</button>
   </div>
 </div>
@@ -158,6 +158,7 @@
         <span class="music-emoji" id="playing-icon">🎵</span>
         <div class="music-genre-name" id="playing-genre">Cargando...</div>
         <div class="music-hint">Pon tus audífonos — no reveles lo que escuchas</div>
+        <button class="btn-play" id="btn-play-music" onclick="startMusic()">▶ Iniciar música</button>
       </div>
       <div style="text-align:center;margin-bottom:1.25rem" id="playing-role-area"></div>
     </div>
@@ -218,10 +219,29 @@
 </div>
 
 <script>
-const GENRES=[{id:'lofi',label:'Lo-fi Hip Hop',icon:'🎧',vid:'jfKfPfyJRdk'},{id:'rock',label:'Rock Clásico',icon:'🎸',vid:'4fndeDfaWCg'},{id:'jazz',label:'Jazz',icon:'🎷',vid:'neV3EPgvZ3g'},{id:'reggaeton',label:'Reggaetón',icon:'🔥',vid:'uelHwf8o7_U'},{id:'electronica',label:'Electrónica',icon:'⚡',vid:'5qap5aO4i9E'},{id:'clasica',label:'Clásica',icon:'🎻',vid:'4Tr0otuiQuU'},{id:'salsa',label:'Salsa',icon:'💃',vid:'8LYxVOL2E7o'},{id:'metal',label:'Metal',icon:'🤘',vid:'HVhKXsOGHKM'},{id:'pop',label:'Pop',icon:'🌟',vid:'ZbZSe6N_BXs'},{id:'cumbia',label:'Cumbia',icon:'🪘',vid:'OJzZ3xLQ0LY'},{id:'trap',label:'Trap',icon:'💀',vid:'76CF88ICo9E'},{id:'country',label:'Country',icon:'🤠',vid:'CXTMRRAmZe8'}];
+const GENRES=[
+  {id:'lofi',label:'Lo-fi Hip Hop',icon:'🎧',vids:['jfKfPfyJRdk','5qap5aO4i9E','lTRiuFIWV54']},
+  {id:'rock',label:'Rock Clásico',icon:'🎸',vids:['4fndeDfaWCg','dQw4w9WgXcQ','HVhKXsOGHKM']},
+  {id:'jazz',label:'Jazz',icon:'🎷',vids:['neV3EPgvZ3g','rYEDA3JcQqw','vmDDOFXSgAs']},
+  {id:'reggaeton',label:'Reggaetón',icon:'🔥',vids:['uelHwf8o7_U','kceiyBPFFHg','DyDnOaZMBa8']},
+  {id:'electronica',label:'Electrónica',icon:'⚡',vids:['5qap5aO4i9E','gCYcHz2k5x0','yRYFKcMa_Ek']},
+  {id:'clasica',label:'Clásica',icon:'🎻',vids:['4Tr0otuiQuU','_GRio3LpZxI','Zi5PqDe2UVA']},
+  {id:'salsa',label:'Salsa',icon:'💃',vids:['8LYxVOL2E7o','gMbxl_LzLGI','kXoAMJcTBqA']},
+  {id:'metal',label:'Metal',icon:'🤘',vids:['HVhKXsOGHKM','0jgrCKhxE1s','aBr2kKAHN6M']},
+  {id:'pop',label:'Pop',icon:'🌟',vids:['ZbZSe6N_BXs','09R8_2nJtjg','JGwWNGJdvx8']},
+  {id:'cumbia',label:'Cumbia',icon:'🪘',vids:['OJzZ3xLQ0LY','Q1rVBPalIpE','7PCkvCPvDXk']},
+  {id:'trap',label:'Trap',icon:'💀',vids:['76CF88ICo9E','xvZqHgFz51I','04854XqcfCY']},
+  {id:'country',label:'Country',icon:'🤠',vids:['CXTMRRAmZe8','bgmpS5KFdKs','hGrIBRKhFoM']},
+];
+
+function getVid(genreId){
+  const g=GENRES.find(x=>x.id===genreId);
+  if(!g)return'jfKfPfyJRdk';
+  return g.vids[Math.floor(Math.random()*g.vids.length)];
+}
 
 const socket=io();
-let S={name:'',roomCode:'',isHost:false,players:[],rounds:[],currentRound:0,scores:{},myRole:null,myGenre:null,myVotes:[],hasVotedStop:false,ytPlayer:null,ytReady:false,pendingVid:null,numImpostors:1};
+let S={name:'',roomCode:'',isHost:false,players:[],rounds:[],currentRound:0,scores:{},myRole:null,myGenre:null,myVotes:[],hasVotedStop:false,ytPlayer:null,ytReady:false,pendingVid:null,numImpostors:1,currentVid:null};
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+id).classList.add('active');}
 function switchTab(tab){document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='create')||(i===1&&tab==='join')));document.getElementById('tab-create').style.display=tab==='create'?'block':'none';document.getElementById('tab-join').style.display=tab==='join'?'block':'none';}
@@ -249,7 +269,6 @@ function joinRoom(){
 
 socket.on('join_error',msg=>err('err-join-code',msg));
 socket.on('error',msg=>alert(msg));
-
 socket.on('room_created',({code})=>{S.roomCode=code;showLobby();});
 socket.on('joined',({code})=>{S.roomCode=code;showLobby();});
 
@@ -257,6 +276,12 @@ socket.on('lobby_update',room=>{
   S.players=room.players;
   S.scores=room.scores;
   renderLobby(room);
+});
+
+socket.io.on('reconnect',()=>{
+  if(S.name&&S.roomCode){
+    socket.emit('rejoin',{name:S.name,code:S.roomCode,isHost:S.isHost});
+  }
 });
 
 function showLobby(){
@@ -268,7 +293,6 @@ function showLobby(){
 }
 
 function renderLobby(room){
-  if(!document.getElementById('screen-lobby').classList.contains('active'))return;
   document.getElementById('lobby-players').innerHTML=room.players.map(p=>
     `<div class="player-item" style="cursor:default">
       <div style="display:flex;align-items:center">
@@ -319,6 +343,7 @@ socket.on('game_started',room=>{
   S.myRole=a.role;S.myGenre=a.genre;
   S.hasVotedStop=false;S.myVotes=[];
   S.numImpostors=rnd.numImpostors;
+  S.currentVid=getVid(S.myGenre);
   showPlaying(room);
 });
 
@@ -335,7 +360,17 @@ function showPlaying(room){
   document.getElementById('btn-stop').textContent='Votar para detener la ronda';
   document.getElementById('stop-fill').style.width='0%';
   document.getElementById('stop-label').textContent=`0 / ${Math.max(1,room.players.length-2)} votos`;
-  playYT(g.vid);
+  const btnPlay=document.getElementById('btn-play-music');
+  btnPlay.style.display='block';
+  btnPlay.textContent='▶ Iniciar música';
+  btnPlay.disabled=false;
+}
+
+function startMusic(){
+  const btn=document.getElementById('btn-play-music');
+  btn.disabled=true;
+  btn.textContent='🎵 Sonando...';
+  playYT(S.currentVid);
 }
 
 socket.on('stop_update',({votes,needed})=>{
@@ -421,12 +456,13 @@ socket.on('game_over',({scores,players})=>{
 });
 
 function resetGame(){
-  S={name:'',roomCode:'',isHost:false,players:[],rounds:[],currentRound:0,scores:{},myRole:null,myGenre:null,myVotes:[],hasVotedStop:false,ytPlayer:S.ytPlayer,ytReady:S.ytReady,pendingVid:null,numImpostors:1};
+  stopYT();
+  S={name:'',roomCode:'',isHost:false,players:[],rounds:[],currentRound:0,scores:{},myRole:null,myGenre:null,myVotes:[],hasVotedStop:false,ytPlayer:S.ytPlayer,ytReady:S.ytReady,pendingVid:null,numImpostors:1,currentVid:null};
   showScreen('home');
 }
 
 function onYouTubeIframeAPIReady(){
-  S.ytPlayer=new YT.Player('yt-player',{height:'1',width:'1',videoId:GENRES[0].vid,playerVars:{autoplay:0,controls:0},events:{onReady:()=>{S.ytReady=true;if(S.pendingVid)playYT(S.pendingVid);}}});
+  S.ytPlayer=new YT.Player('yt-player',{height:'1',width:'1',videoId:GENRES[0].vids[0],playerVars:{autoplay:0,controls:0},events:{onReady:()=>{S.ytReady=true;if(S.pendingVid)playYT(S.pendingVid);}}});
 }
 function playYT(videoId){
   if(!S.ytReady){S.pendingVid=videoId;if(!window.YT)loadYTApi();return;}
